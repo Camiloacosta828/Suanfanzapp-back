@@ -2,6 +2,11 @@ const app = require('express')();
 const http = require('http').createServer(app);
 const io = require('socket.io')(http);
 const personController = require("./api/PersonController")
+const pool = require("./config/mysqldev");
+const bodyParser = require("body-parser");
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
+
 
 
 const port = 3000;
@@ -32,4 +37,7 @@ http.listen(port, () => {
 });
 
 app.get('/person', personController.persons);
+app.post('/person/login', personController.login);
+app.post('/person/save', personController.save);
+
 module.exports = app;
