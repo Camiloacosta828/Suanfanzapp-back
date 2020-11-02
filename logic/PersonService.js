@@ -25,7 +25,7 @@ exports.login = (data, res, next) => {
         }
         if (results[0] === undefined) {
             res.status(404).send({
-                message: "A error occurred when person id not exist or password doesen't match "
+                message: "A error occurred when person id not exist or password doesn't match "
             });
         } else {
             res.send(results);
@@ -34,14 +34,15 @@ exports.login = (data, res, next) => {
 };
 const Person = function (customer) {
     this.email = customer.email;
+    this.lastname = customer.lastname;
     this.name = customer.name;
     this.password = customer.password;
     this.id_number_format = customer.id_number_format;
     this.number = customer.number;
 };
 Person.create = (person, result) => {
-    var sqlq = `INSERT INTO person(name, number,email,password,id_number_format) 
-    VALUES('${person.name}','${person.number}',
+    var sqlq = `INSERT INTO person(name, number,lastname,email,password,id_number_format) 
+    VALUES('${person.name}','${person.number}','${person.lastname}',
     '${person.email}','${person.password}', '${person.id_number_format}')`;
     pool.query(sqlq, (err, res) => {
         if (err) {
@@ -68,6 +69,7 @@ exports.create = (req, res) => {
     const person = new Person({
         email: req.body.email,
         name: req.body.name,
+        lastname: req.body.lastname,
         number: req.body.number,
         id_number_format: req.body.id_number_format,
         password: req.body.password

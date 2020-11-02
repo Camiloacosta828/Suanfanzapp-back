@@ -24,7 +24,6 @@ app.use((req, res, next) => {
 
 io.on('connection', (socket) => {
   console.log('a user connected');
-
   socket.on('newMsg', (msg) => {
     console.log(`Emitiendo nuevo mensaje: ${msg.content}`);
     io.emit('newMsg', msg);
