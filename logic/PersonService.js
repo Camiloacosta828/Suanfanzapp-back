@@ -182,4 +182,26 @@ exports.contactList = (data, res, next) => {
         if (err) resolve("Error")
         res.send(results);
     });
-};
+}
+exports.findByNumberOrEmail = (req, res, next) => {
+    if (!req) {
+        res.status(400).send({
+            message: "Content can not be empty!"
+        });
+    }
+    const sql = `select * from person 
+    where number ='${req}'
+    or email = '${req}' `;
+    pool.query(sql, (err, results) => {
+        if (err)
+            res.status(500).send({
+                message:
+                    err.message || "Some error occurred while find the person."
+            });
+        if (results[0] === undefined)
+            res.status(404).send({
+                message: "This conctact dont exist "
+            });
+        else res.send(results);
+    });
+}

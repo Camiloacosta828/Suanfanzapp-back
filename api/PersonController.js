@@ -24,6 +24,14 @@ exports.contactList = (req, res, next) => {
         return next(Error);
     }
 };
+exports.findByNumberOrEmail = (req, res, next) => {
+    const params = req.params.numberoremail;
+    try {
+        personService.findByNumberOrEmail(params, res, next);
+    } catch (Error) {
+        return next(Error);
+    }
+};
 exports.createContact = (req, res, next) => {
     try {
         personService.createContact(req, res);
