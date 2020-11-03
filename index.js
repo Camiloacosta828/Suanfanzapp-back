@@ -36,7 +36,11 @@ http.listen(port, () => {
 });
 
 app.get('/person', personController.persons);
+app.put('/person/update', personController.update);
+app.get('/person/contactList/:id', personController.contactList);
 app.post('/person/login', personController.login);
 app.post('/person/save', personController.save);
+app.post('/person/contact', personController.createContact);
+
 
 module.exports = app;
