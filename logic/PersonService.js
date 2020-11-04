@@ -9,6 +9,17 @@ const Person = function (person) {
     this.id_number_format = person.id_number_format;
     this.number = person.number;
 };
+const GroupPerson = function (groupPerson) {
+    this.id = groupPerson.id;
+    this.id_person = groupPerson.id_person;
+    this.id_group = groupPerson.id_group;
+};
+const ChatGroup = function (group) {
+    this.name = group.name;
+    this.id_person_admin = group.id_person_admin;
+    this.url_img_group = group.url_img_group;
+    this.id = group.id;
+};
 const Contact = function (contact) {
     this.person_id_from = contact.person_id_from;
     this.contact_id = contact.contact_id;
@@ -93,7 +104,32 @@ Person.update = (person, result) => {
         result(null, { ...person });
     });
 };
-
+ChatGroup.create = (group, result) => {
+    var sqlq = `INSERT INTO chat_group(name, id_person_admin,url_img_group,id) 
+    VALUES('${group.name}','${group.id_person_admin}','${group.url_img_group}','${group.id}')`;
+    pool.query(sqlq, (err, res) => {
+        if (err) {
+            console.log("error: ", err);
+            result(err, null);
+            return;
+        }
+        console.log("created group : ", { ...group });
+        result(null, { ...group });
+    });
+};
+GroupPerson.create = (groupPerson, result) => {
+    var sqlq = `INSERT INTO group_person(id,id_person,id_group) 
+    VALUES('${groupPerson.id}','${groupPerson.id_person}','${groupPerson.id_group}')`;
+    pool.query(sqlq, (err, res) => {
+        if (err) {
+            console.log("error: ", err);
+            result(err, null);
+            return;
+        }
+        console.log("created group : ", { ...groupPerson });
+        result(null, { ...groupPerson });
+    });
+};
 exports.createContact = (req, res) => {
 
     // Validate request
@@ -141,6 +177,53 @@ exports.create = (req, res) => {
             res.status(500).send({
                 message:
                     err.message || "Some error occurred while creating the person."
+            });
+        else res.send(data);
+    });
+}
+exports.createGroup = (req, res) => {
+
+    // Validate request
+    if (!req.body) {
+        res.status(400).send({
+            message: "Content can not be empty!"
+        });
+    }
+    // Create a group
+    const group = new ChatGroup({
+        name: req.body.name,
+        id_person_admin: req.body.id_person_admin,
+        url_img_group: req.body.url_img_group,
+        id: req.body.id
+    });
+    ChatGroup.create(group, (err, data) => {
+        if (err)
+            res.status(500).send({
+                message:
+                    err.message || "Some error occurred while creating the group."
+            });
+        else res.send(data);
+    });
+}
+exports.createGroupPerson = (req, res) => {
+
+    // Validate request
+    if (!req.body) {
+        res.status(400).send({
+            message: "Content can not be empty!"
+        });
+    }
+    // Create a group
+    const groupPerson = new GroupPerson({
+        id: req.body.id,
+        id_person: req.body.id_person,
+        id_group: req.body.id_group,
+    });
+    GroupPerson.create(groupPerson, (err, data) => {
+        if (err)
+            res.status(500).send({
+                message:
+                    err.message || "Some error occurred while creating the group."
             });
         else res.send(data);
     });

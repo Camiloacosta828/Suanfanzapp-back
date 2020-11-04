@@ -54,3 +54,19 @@ exports.save = (req, res, next) => {
         return next(Error);
     }
 };
+exports.createGroup = (req, res, next) => {
+    try {
+        personService.createGroup(req, res, next);
+    }
+    catch (Error) {
+        return next(Error);
+    }
+};
+exports.createGroupPerson = (req, res, next) => {
+    try {
+        personService.createGroupPerson(req, res, next);
+    }
+    catch (Error) {
+        return next(Error);
+    }
+};

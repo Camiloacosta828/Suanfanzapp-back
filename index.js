@@ -41,6 +41,8 @@ app.get('/person/contactList/:id', personController.contactList);
 app.get('/person/findByNumberOrEmail/:numberoremail', personController.findByNumberOrEmail);
 app.post('/person/login', personController.login);
 app.post('/person/save', personController.save);
+app.post('/person/createGroup', personController.createGroup);
+app.post('/person/createGroupPerson', personController.createGroupPerson);
 app.post('/person/contact', personController.createContact);
 
 
